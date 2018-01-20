@@ -21,11 +21,15 @@ object Main {
 		//Solve imperative
 		val numOfRotationsImperative = log("Imperative", milli){examplePancakes.map(faceThemUpImp)}
 
+		//Solve functional Fast tail recursive
+		val numOfRotationsFast = log("Functional Fast", micro){examplePancakes.map(faceThemUp)}
 
 		// Print output
 		printOutput(numOfRotationsImperative)
 
 		printOutput(numOfRotations)
+
+		printOutput(numOfRotationsFast)
 
 	}
 
