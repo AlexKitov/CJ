@@ -1,17 +1,41 @@
-//import Utilities.Constants.{Tiles, goldTile, possibleTile}
-//import FractilesUtils._
+import FractilesUtils.TileSeq
+import Utilities.Constants.Tiles
 
+case class Fractile(origSeq: TileSeq, currSeq: TileSeq, C: Int) {
 
-trait Tile{
-	def expand()
+	def expand(): Fractile = {
+		def substWithGoldTiles():TileSeq = {
+			val artSize = origSeq.size
+			Seq.fill(artSize)(Tiles.G)
+		}
+
+		def substTile(tile: Tiles): TileSeq = {
+			if (tile == Tiles.G) substWithGoldTiles()
+			else origSeq
+		}
+
+		val expandedSeq = currSeq.flatMap(substTile)
+
+		Fractile(origSeq, expandedSeq, C + 1)
+	}
 }
 
-case class Lead(origSeq: Seq[Tile]) extends Tile{
-	override def expand(): Unit = origSeq
-}
 
-case class Gold(origSeq: Seq[Tile]) extends Tile{
-	override def expand(): Unit = Seq.fill(origSeq.size)(Gold(origSeq))
-}
+
+
+//trait Tile{
+//	def expand()
+//}
+//case class Lead(origSeq: Seq[Tile]) extends Tile{
+//	override def expand(): Unit = origSeq
+//}
+//case class Gold(origSeq: Seq[Tile]) extends Tile{
+//	override def expand(): Unit = Seq.fill(origSeq.size)(Gold(origSeq))
+//}
 //
-//val possibleTile = Seq(Lead, Tiles.L)
+//
+//
+//trait Fractile{
+//	def isEmpty = false
+//	def
+//}

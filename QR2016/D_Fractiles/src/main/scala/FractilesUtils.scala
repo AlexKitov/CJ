@@ -7,7 +7,7 @@ object FractilesUtils {
 
 	type TileSeq = Seq[Tiles]
 
-	def genFractiles(n: Int, elems: TileSeq = possibleTile): Seq[TileSeq] = {
+	def genFractiles(K: Int, elems: TileSeq = possibleTile): Seq[Fractile] = {
 		def addNextTile(current: Seq[TileSeq]): Seq[TileSeq] = {
 			for {
 				seq <- current
@@ -15,26 +15,23 @@ object FractilesUtils {
 			} yield seq :+ j
 		}
 		def loop(current: Seq[TileSeq], count: Int): Seq[TileSeq] = {
-			if (count >= n) current
+			if (count >= K) current
 			else loop(addNextTile(current), count + 1)
 		}
 		val seqFract = loop(Seq(Seq()), 0)
 
-		seqFract
+		seqFract.map(tileSeq => Fractile(tileSeq, tileSeq, 1))
 	}
 
-	def expandComplexity(origSeq: TileSeq, artWorkToExpand: TileSeq) : TileSeq = {
-		val artSize = origSeq.size
-		val goldArt = Seq.fill(artSize)(Tiles.G)
-
-		def substTile(tile: Tiles): TileSeq = {
-			if (tile == Tiles.G) goldArt
-			else origSeq
-		}
-
-		artWorkToExpand.flatMap(substTile)
+	def expandSeqFractiles(seqFractiles: Seq[Fractile], nTimes: Int): Seq[Fractile] = {
+			if(nTimes == 0) seqFractiles
+			else expandSeqFractiles(seqFractiles.map(_.expand()), nTimes - 1)
 	}
 
+	def getArtworks(taskParams: InputPerTask): Seq[Fractile] = {
+		val possibleFractiles = genFractiles(taskParams.K)
+		expandSeqFractiles(possibleFractiles, taskParams.C - 1)
+	}
 
 
 }
