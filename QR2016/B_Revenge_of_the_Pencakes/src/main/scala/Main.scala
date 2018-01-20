@@ -1,35 +1,47 @@
 import Utilities.Constants._
 import Utilities.Utils._
 import Utilities.CustomLogger._
+import TimeUnits._
 import PancakesManager._
-import java.nio.file.Paths
+import PancakesManagerFor._
+import java.nio.file.{Path, Paths}
 
 object Main {
 	val smallExample = fsPath(smallExampleFileName)
 	val largeExample = fsPath(largeExampleFileName)
 
 
-	def main(args: Array[String]): Unit = log("MainSmallExample", TimeUnits.milli){
+	def main(args: Array[String]): Unit = log("MainSmallExample", milli){
 		// read the input file
-		val lines = getLines(largeExample.toString)
-		val numExamples = lines.head
+		val examplePancakes  = getInput(largeExample)
+
+		//Solve functional
+		val numOfRotations = log("Functional", milli){examplePancakes.map(faceThemUp)}
+
+		//Solve imperative
+		val numOfRotationsImperative = log("Imperative", milli){examplePancakes.map(faceThemUpImp)}
+
+
+		// Print output
+		printOutput(numOfRotationsImperative)
+
+		printOutput(numOfRotations)
+
+	}
+
+	def getInput(file: Path): Seq[Seq[Char]] = {
+		val lines = getLines(file.toString)
 		val examples    = lines.tail
 
-		val examplePancakes  = examples.map(str => str.toCharArray.toSeq)
+		examples.map(str => str.toCharArray.toSeq)
+	}
 
-		val numOfRotations = examplePancakes.map(faceThemUp)
-
-		val zipped = examples zip numOfRotations
-
-		zipped.foreach{
-			case (example, sleep) => println(s"$example => $sleep")
-		}
-
+	def printOutput(numRotations: Seq[Int]): Unit = {
 		val linesRes =
-			for (i <- 1 to numExamples.toInt)
-				yield formatCases(i, numOfRotations(i-1))
+			for (i <- numRotations.indices)
+				yield formatCases(i + 1, numRotations(i))
 
-		linesRes.map(println)
+		linesRes.foreach(println)
 
 		val fileNameOut = Paths.get(s"./out/$largeExampleFileNameOut")
 		println(fileNameOut)
