@@ -9,16 +9,15 @@ object Main {
 	def getOutputPath(fileName: String): Path  = Paths.get(s"./out/$fileName")
 	def getInputPath(fileName: String): String = fsPath(fileName).toString
 
-	val line0 = "Case #1:"
-
 	def main(args: Array[String]): Unit =
 		log("MainProgram", TimeUnits.hms){
 			val problems = getTaskInputs(args(0))
 
-			val problemSolution = problems.map(solveTask)
+			val problemSolution = log("Functional Solution"){problems.map(p => solveTask(p.pancakes))}
 
 			produceOutput(problemSolution, args(1))
 		}
+
 
 	def getTaskInputs(filename: String): Seq[ProblemExample] = {
 		// read the input file
@@ -37,6 +36,7 @@ object Main {
 
 		problems
 	}
+
 
 	def produceOutput(solutions: Seq[Int], fileName: String): Unit = {
 

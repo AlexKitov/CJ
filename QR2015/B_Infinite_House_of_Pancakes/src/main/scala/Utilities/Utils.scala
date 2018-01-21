@@ -10,7 +10,7 @@ import scala.io.Source
 object Utils {
 	/**
 	  * Get the relative path to a resource file depending on Test / main
-	  * @param resource
+	  * @param resource string name of the file
 	  * @return
 	  */
 	def fsPath(resource: String): Path =
@@ -43,7 +43,7 @@ object Utils {
 	  */
 	def writeLines(data: Seq[String], fileName: String): Unit ={
 		val pw = new PrintWriter(new File(fileName))
-		data.map(pw.println)
+		data.foreach(pw.println(_))
 		pw.close()
 	}
 }
