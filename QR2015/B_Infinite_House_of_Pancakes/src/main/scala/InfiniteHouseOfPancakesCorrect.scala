@@ -2,7 +2,7 @@ import Utilities.Constants._
 
 object InfiniteHouseOfPancakesCorrect {
 
-	def solveTask(example: PancakesDist): Int ={
+	def solveTaskCorrect(example: PancakesDist): Int ={
 		val max_pancakes = example.max
 
 		def loop(x: Int, solution: Int): Int ={

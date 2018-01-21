@@ -1,5 +1,6 @@
 import Utilities.Utils._
 import Utilities.CustomLogger._
+import InfiniteHouseOfPancakes._
 import InfiniteHouseOfPancakesCorrect._
 import java.nio.file.{Path, Paths}
 
@@ -10,12 +11,21 @@ object Main {
 	def getInputPath(fileName: String): String = fsPath(fileName).toString
 
 	def main(args: Array[String]): Unit =
-		log("MainProgram", TimeUnits.hms){
-			val problems = getTaskInputs(args(0))
+		log("MainProgram", TimeUnits.hms) {
+			val problems = getTaskInputs(args(1))
 
-			val problemSolution = log("Functional Solution"){problems.map(p => solveTask(p.pancakes))}
-
-			produceOutput(problemSolution, args(1))
+			val problemSolution =
+				log("Functional Solution") {
+					if (args(0) == "wrong"){
+						println("Use wrong solution")
+						problems.map(p => solveTaskWrong(p.pancakes))
+					}
+					else{
+						println("Use correct solution")
+						problems.map(p => solveTaskCorrect(p.pancakes))
+					}
+				}
+			produceOutput(problemSolution, args(2))
 		}
 
 
