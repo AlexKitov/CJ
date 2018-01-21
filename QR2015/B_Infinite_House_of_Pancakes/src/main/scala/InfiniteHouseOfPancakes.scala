@@ -12,7 +12,7 @@ object InfiniteHouseOfPancakes {
 	}
 	def solveTask(example: PancakesDist): Int ={
 
-		println("########### Solution to next task follows ##############")
+//		println("########### Solution to next task follows ##############")
 
 		def getOccurrences(example: PancakesDist): Seq[NOcc] = {
 			val grouped = example.groupBy(v => v)
@@ -25,13 +25,14 @@ object InfiniteHouseOfPancakes {
 
 		def consolidate(pc: Seq[NOcc]): Seq[NOcc] = {
 			val grouped = pc.groupBy(v => v.value)
+			grouped.map{case (v, occ) => NOcc(v, occ.map(_.occurrences).sum)}.toSeq
 		}
 
 		def loop(occurrences: Seq[NOcc], specialMinutes: Int, solution: Int, step: Int): Int = {
 			if(occurrences.head.value <= 2) math.min(specialMinutes + 2, solution)
 			else{
 
-				val split  = occurrences.head.split ++ occurrences.tail
+				val split  = consolidate(occurrences.head.split ++ occurrences.tail)
 
 				val sorted = split.sortWith(_.value > _.value)
 
@@ -41,8 +42,9 @@ object InfiniteHouseOfPancakes {
 
 				val sol = math.min(solution, maxPanc + specMins)
 
-				println(s"Step #$step: $sorted")
-				println(s"Step #$step: maxPc=$maxPanc, specMins=$specMins, thisRound=${maxPanc + specMins}, sol=$sol")
+//				println(s"=============================================")
+//				println(s"Step #$step: $sorted")
+//				println(s"Step #$step: maxPc=$maxPanc, specMins=$specMins, thisRound=${maxPanc + specMins}, sol=$sol")
 
 				loop(sorted, specMins, sol, step + 1)
 			}
@@ -52,7 +54,7 @@ object InfiniteHouseOfPancakes {
 		val occExample = getOccurrences(example)
 		val sorted = occExample.sortWith(_.value > _.value)
 
-		println(s"Before loop: $sorted")
+//		println(s"Before loop: $sorted")
 
 		loop(sorted, 0, example.max, 1)
 	}
