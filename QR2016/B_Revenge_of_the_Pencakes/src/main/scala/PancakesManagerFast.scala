@@ -4,17 +4,17 @@ object PancakesManagerFast {
 
 	def faceThemUpFast(pancakes: Seq[Char]): Int = {
 
-		def faceUpRun(pancakes: Seq[Char], count: Int): Int = {
-			if (pancakes.tail.isEmpty) {
-				if (pancakes.head == faceDown) count + 1
-				else count
-			}
-			else {
-				if (pancakes.head != pancakes.tail.head) faceUpRun(pancakes.tail, count + 1)
-				else faceUpRun(pancakes.tail, count)
+		def loop(pancakes: Seq[Char], count: Int): Int = {
+			pancakes match {
+				case head :: Nil =>
+					if (head == faceDown) count + 1
+					else count
+				case head :: tail =>
+					if (head != tail.head) loop(tail, count +  1)
+					else loop(tail, count)
 			}
 		}
 
-		faceUpRun(pancakes, 0)
+		loop(pancakes, 0)
 	}
 }
