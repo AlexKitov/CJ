@@ -1,6 +1,6 @@
 import Utilities.Utils._
 import Utilities.CustomLogger._
-import InfiniteHouseOfPancakes._
+import InfiniteHouseOfPancakesCorrect._
 import java.nio.file.{Path, Paths}
 
 import Utilities.Constants.ProblemExample

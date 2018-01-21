@@ -2,7 +2,7 @@ val example = Seq(1,2,3,2,3,6,7,1,1,7,7,7)
 
 example.groupBy(v => v)
 
-import InfiniteHouseOfPancakes.NOcc
+import InfiniteHouseOfPancakesCorrect.NOcc
 
 val a = NOcc(7, 5)
 a.split
