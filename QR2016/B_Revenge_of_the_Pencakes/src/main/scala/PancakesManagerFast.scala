@@ -10,7 +10,7 @@ object PancakesManagerFast {
 					if (head == faceDown) count + 1
 					else count
 				case head :: tail =>
-					if (head != tail.head) loop(tail, count +  1)
+					if (head != tail.head) loop(tail, count + 1)
 					else loop(tail, count)
 			}
 		}

@@ -22,17 +22,17 @@ object Main {
 	def getTaskInputs(filename: String): Seq[ProblemExample] = {
 		// read the input file
 		val lines      = getLines(getInputPath(filename))
-		val splitLines = lines.tail.map(_.split(" "))
+		val splitLines = lines.tail
 
 		val problems = splitLines.grouped(2)
 				.map(iterator =>
 					ProblemExample(
-						iterator.head.head.toInt
-						, iterator.tail.head.map(_.toInt).toSeq
+						iterator.head.toInt
+						, iterator.tail.head.split(" ").map(_.toInt)
 					)
 				).toSeq
 
-		problems.foreach(seq => println(s"Problem is: '$seq'"))
+		problems.foreach(pe => println(s"Problem is: '${pe.numNonEmpty}, ${pe.pancakes.mkString(", ")}'"))
 
 		problems
 	}
