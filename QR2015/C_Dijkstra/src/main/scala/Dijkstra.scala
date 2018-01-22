@@ -1,4 +1,4 @@
-import Utilities.Constants._
+
 import Utilities.Utils.{getInputPath, getLines, getOutputPath, writeLines}
 
 object Dijkstra {
