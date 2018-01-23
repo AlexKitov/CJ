@@ -5,8 +5,14 @@ object Dijkstra {
 
 	case class ProblemExample(l: Int, rep: Int, str: String)
 
-	def solveTask(example: ProblemExample): Int ={
-		1
+	def solveTask(example: ProblemExample): String ={
+		def loop(strRep: Seq[Char]): Unit = {
+			println(s"")
+		}
+
+		loop((example.str * example.rep).toCharArray.toSeq)
+
+		"Yes"
 	}
 
 
