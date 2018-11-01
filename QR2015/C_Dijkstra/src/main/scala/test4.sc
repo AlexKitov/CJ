@@ -11,32 +11,42 @@ def treeDiameter(n: Int, tree: Array[Array[Int]]): Int = {
       case (key, nodes) =>
         (key, nodes.flatten.toSet diff Set(key))
     }
-
   }
+
   def treeDiam(tree: Array[Array[Int]]): Int = {
 
-    def calculateNode(nodeId: Int, calculated: Set[(Node, Int)]): (Node, Int) = {
-      val c = calculated.toList
+    def calcLine(nodeId: Int,e: (Node, Int)): (Node, Int) = {
+      val (node, maxCandidate) = e
+      val distFromLeaf = node.distFromLeaf + 1
+      val maxPath = distFromLeaf
 
+      (Node(nodeId, distFromLeaf, math.max(maxPath, maxCandidate)), math.max(maxPath, maxCandidate))
+    }
+
+    def calcFork(nodeId: Int,calculated: Set[(Node, Int)]): (Node, Int) = {
+      val c = calculated.toList
       val directDescNodes = c.map(_._1)
-//      val inDeptSums = c.map(_._2)
       val maxCandidate = c.map(_._2).max
 
       val distFromLeaf = directDescNodes.map(_.distFromLeaf).max + 1
 
-      val maxPath =
-        if (directDescNodes.size == 1) distFromLeaf
-        else directDescNodes.grouped(2)
-          .map(p => p.map(_.distFromLeaf).sum)
-          .max + 2
+      val maxPath = directDescNodes.grouped(2)
+        .map(p => p.map(_.distFromLeaf).sum)
+        .max + 2
 
-      val curNode = Node(nodeId, distFromLeaf, maxPath)
+      (Node(nodeId, distFromLeaf, math.max(maxPath, maxCandidate)), math.max(maxPath, maxCandidate))
+    }
 
-      val newMaxPath = math.max(maxPath, maxCandidate)
-      println(curNode)
-      println(newMaxPath)
-//      println(s"Calculationg node: ${curNode.id} and desc size is: ${directDescNodes.size}")
-      (curNode, newMaxPath)
+    def calculateNode(nodeId: Int, calculated: Set[(Node, Int)]): (Node, Int) = {
+
+      val curNode =
+        if(calculated.size == 1)  calcLine(nodeId, calculated.head)
+        else calcFork(nodeId, calculated)
+
+      println(curNode._1)
+      println(curNode._2)
+      //      println(s"Calculationg node: ${curNode.id} and desc size is: ${directDescNodes.size}")
+      curNode
     }
 
     def traverseTree(comingFrom: Int, node: (Int, Set[Int]), vgr: Map[Int, Set[Int]]): (Node, Int) = {
@@ -55,11 +65,11 @@ def treeDiameter(n: Int, tree: Array[Array[Int]]): Int = {
     }
 
     val vgr = preProc(tree)
-//    println(s"Start from node: ${vgr.head._1}")
+    //    println(s"Start from node: ${vgr.head._1}")
     val (node, maxPath) = traverseTree(-1, vgr.head, vgr)
-//    println(node)
-//    println(maxPath)
-//    lstNodes.foreach(println)
+    //    println(node)
+    //    println(maxPath)
+    //    lstNodes.foreach(println)
     maxPath
   }
 
